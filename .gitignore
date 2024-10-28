@@ -1,0 +1,10 @@
+# Dependencias
+node_modules
+
+# Build
+build
+
+# Database
+
+# Enviromment
+.env
