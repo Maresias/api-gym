@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  api-gym-pg:
+    image: bitnami/postgresql
+    ports:
+      -5432:5432
+    environment:
+      - POSTGRESQL_USERNAME=maresias
+      - POSTGRESQL_PASSWORD=vilagrapa
+      - POSTGRESQL_DATABASE=apigym
