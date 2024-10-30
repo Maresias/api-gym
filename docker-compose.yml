@@ -6,6 +6,6 @@ services:
     ports:
       -5432:5432
     environment:
-      - POSTGRESQL_USERNAME=maresias
-      - POSTGRESQL_PASSWORD=vilagrapa
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docekr
       - POSTGRESQL_DATABASE=apigym
