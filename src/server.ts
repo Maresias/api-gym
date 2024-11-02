@@ -1,8 +1,6 @@
 import { app } from './app'
 import { env } from './env'
-import { appRegister } from './http/routes'
 
-app.register(appRegister)
 app
   .listen({
     host: '0.0.0.0',
