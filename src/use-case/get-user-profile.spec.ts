@@ -2,6 +2,7 @@ import { InMemoryUsersReporitory } from '@/repositories/in-memory/in-memory-user
 import { it, describe, expect, beforeEach } from 'vitest'
 import { GetUserProfileUseCase } from './get-user-profile'
 import { hash } from 'bcryptjs'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let inMemoryUsersReporitory: InMemoryUsersReporitory
 let sut: GetUserProfileUseCase
@@ -23,5 +24,13 @@ describe('Get User Profile', () => {
       userId: createUser.id,
     })
     expect(user.name).toEqual('Jhon Doe $7')
+  })
+
+  it('should not get be able user profile', async () => {
+    await expect(() =>
+      sut.findByUserId({
+        userId: '123094l3983',
+      }),
+    ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })
