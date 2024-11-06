@@ -3,6 +3,16 @@ import { Prisma } from '@prisma/client'
 import { UserRepository } from '../interface-user-repository'
 
 export class PrismaUserRepository implements UserRepository {
+  async findByUserId(id: string) {
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    return user
+  }
+
   async findByEmail(email: string) {
     const user = await prisma.user.findUnique({
       where: {
