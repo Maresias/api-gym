@@ -1,14 +1,27 @@
 import { InMemoryCheckInRepository } from '@/repositories/in-memory/in-memory-check-in-repository'
 import { it, describe, beforeEach, expect, vi, afterEach } from 'vitest'
 import { CheckInUseCase } from './check-in'
+import { Decimal } from '@prisma/client/runtime/library'
+import { InMemoryGymRepository } from '@/repositories/in-memory/in-memory-gym-repository'
 
 let inMemoryCheckInRepository: InMemoryCheckInRepository
+let inMemoryGymRepository: InMemoryGymRepository
 let sut: CheckInUseCase
 
 describe('Test check in ', () => {
   beforeEach(() => {
     inMemoryCheckInRepository = new InMemoryCheckInRepository()
-    sut = new CheckInUseCase(inMemoryCheckInRepository)
+    inMemoryGymRepository = new InMemoryGymRepository()
+    sut = new CheckInUseCase(inMemoryCheckInRepository, inMemoryGymRepository)
+
+    inMemoryGymRepository.gyms.push({
+      id: 'gym-id-01',
+      title: 'gym',
+      description: 'trenio',
+      phone: '',
+      latitude: new Decimal(0),
+      longitude: new Decimal(0),
+    })
 
     vi.useFakeTimers()
   })
@@ -21,6 +34,8 @@ describe('Test check in ', () => {
     const { checkIn } = await sut.create({
       userId: 'user-id-01',
       gymId: 'gym-id-01',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
@@ -53,6 +68,8 @@ describe('Test check in ', () => {
     await sut.create({
       userId,
       gymId,
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     vi.setSystemTime(new Date(2009, 6, 1, 12))
@@ -60,6 +77,8 @@ describe('Test check in ', () => {
     const check = await sut.create({
       userId,
       gymId,
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     expect(check.checkIn.id).toEqual(expect.any(String))
