@@ -19,8 +19,8 @@ describe('Test check in ', () => {
       title: 'gym',
       description: 'trenio',
       phone: '',
-      latitude: new Decimal(0),
-      longitude: new Decimal(0),
+      latitude: new Decimal(-23.780252),
+      longitude: new Decimal(-45.56327),
     })
 
     vi.useFakeTimers()
@@ -34,8 +34,8 @@ describe('Test check in ', () => {
     const { checkIn } = await sut.create({
       userId: 'user-id-01',
       gymId: 'gym-id-01',
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -23.779769,
+      userLongitude: -45.56326,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
@@ -50,12 +50,16 @@ describe('Test check in ', () => {
     await sut.create({
       userId,
       gymId,
+      userLatitude: -23.779769,
+      userLongitude: -45.56326,
     })
 
     await expect(() =>
       sut.create({
         userId,
         gymId,
+        userLatitude: -23.779769,
+        userLongitude: -45.56326,
       }),
     ).rejects.toBeInstanceOf(Error)
   })
@@ -68,8 +72,8 @@ describe('Test check in ', () => {
     await sut.create({
       userId,
       gymId,
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -23.779769,
+      userLongitude: -45.56326,
     })
 
     vi.setSystemTime(new Date(2009, 6, 1, 12))
@@ -77,10 +81,30 @@ describe('Test check in ', () => {
     const check = await sut.create({
       userId,
       gymId,
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -23.779769,
+      userLongitude: -45.56326,
     })
 
     expect(check.checkIn.id).toEqual(expect.any(String))
+  })
+
+  it('should not be able to chechi in on distant gym', async () => {
+    inMemoryGymRepository.gyms.push({
+      id: 'gym-id-02',
+      title: 'gym-super',
+      description: 'treino',
+      phone: '',
+      latitude: new Decimal(-23.785831),
+      longitude: new Decimal(-45.588218),
+    })
+
+    await expect(() =>
+      sut.create({
+        userId: 'user-id-01',
+        gymId: 'gym-id-02',
+        userLatitude: -23.779769,
+        userLongitude: -45.56326,
+      }),
+    ).rejects.toBeInstanceOf(Error)
   })
 })
