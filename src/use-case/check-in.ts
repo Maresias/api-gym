@@ -41,9 +41,9 @@ export class CheckInUseCase {
       },
     )
 
-    const max_Distnce = 0.1
+    const MAX_DISTANCE_IN_KILOMETERS = 0.1
 
-    if (distance > max_Distnce) {
+    if (distance > MAX_DISTANCE_IN_KILOMETERS) {
       throw new Error()
     }
 
