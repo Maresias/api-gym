@@ -1,7 +1,6 @@
 import { InMemoryGymRepository } from '@/repositories/in-memory/in-memory-gym-repository'
 import { describe, it, beforeEach, expect } from 'vitest'
 import { GymUseCase } from './create-gym'
-import { randomUUID } from 'crypto'
 
 let inMenmoryGymRepository: InMemoryGymRepository
 let sut: GymUseCase
@@ -14,7 +13,6 @@ describe('Test gym use case', () => {
 
   it('should be able possible create gym', async () => {
     const { gym } = await sut.execute({
-      id: randomUUID(),
       title: 'j@v@',
       description: 'nodejs',
       phone: null,

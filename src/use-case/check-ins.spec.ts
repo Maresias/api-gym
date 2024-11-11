@@ -9,18 +9,18 @@ let inMemoryGymRepository: InMemoryGymRepository
 let sut: CheckInUseCase
 
 describe('Test check in ', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     inMemoryCheckInRepository = new InMemoryCheckInRepository()
     inMemoryGymRepository = new InMemoryGymRepository()
     sut = new CheckInUseCase(inMemoryCheckInRepository, inMemoryGymRepository)
 
-    inMemoryGymRepository.gyms.push({
+    await inMemoryGymRepository.create({
       id: 'gym-id-01',
       title: 'gym',
       description: 'trenio',
       phone: '',
-      latitude: new Decimal(-23.780252),
-      longitude: new Decimal(-45.56327),
+      latitude: -23.780252,
+      longitude: -45.56327,
     })
 
     vi.useFakeTimers()
