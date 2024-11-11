@@ -26,5 +26,11 @@ describe('Test Feth use case', () => {
     const { checkIns } = await sut.execute({ userId })
 
     expect(checkIns).toHaveLength(2)
+    expect(checkIns).toEqual([
+      expect.objectContaining({ gym_id: 'gym-id-1' }),
+      expect.objectContaining({ gym_id: 'gym-id-2' }),
+    ])
   })
+
+  it('should be able to fetch paginated check-in history')
 })
