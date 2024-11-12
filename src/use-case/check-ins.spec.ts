@@ -33,7 +33,7 @@ describe('Test check in ', () => {
   })
   it('should be possible for the user to check in', async () => {
     vi.setSystemTime(new Date(2008, 6, 1, 12))
-    const { checkIn } = await sut.create({
+    const { checkIn } = await sut.execute({
       userId: 'user-id-01',
       gymId: 'gym-id-01',
       userLatitude: -23.779769,
@@ -49,7 +49,7 @@ describe('Test check in ', () => {
     const userId = 'user-id-01'
     const gymId = 'gym-id-01'
 
-    await sut.create({
+    await sut.execute({
       userId,
       gymId,
       userLatitude: -23.779769,
@@ -57,7 +57,7 @@ describe('Test check in ', () => {
     })
 
     await expect(() =>
-      sut.create({
+      sut.execute({
         userId,
         gymId,
         userLatitude: -23.779769,
@@ -71,7 +71,7 @@ describe('Test check in ', () => {
     const userId = 'user-id-01'
     const gymId = 'gym-id-01'
 
-    await sut.create({
+    await sut.execute({
       userId,
       gymId,
       userLatitude: -23.779769,
@@ -80,7 +80,7 @@ describe('Test check in ', () => {
 
     vi.setSystemTime(new Date(2009, 6, 1, 12))
 
-    const check = await sut.create({
+    const check = await sut.execute({
       userId,
       gymId,
       userLatitude: -23.779769,
@@ -101,7 +101,7 @@ describe('Test check in ', () => {
     })
 
     await expect(() =>
-      sut.create({
+      sut.execute({
         userId: 'user-id-01',
         gymId: 'gym-id-02',
         userLatitude: -23.779769,

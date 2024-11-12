@@ -5,16 +5,6 @@ import { randomUUID } from 'crypto'
 export class InMemoryGymRepository implements GymRepository {
   public gyms: Gym[] = []
 
-  async findById(id: string) {
-    const gym = this.gyms.find((gym) => gym.id === id)
-
-    if (!gym) {
-      return null
-    }
-
-    return gym
-  }
-
   async create(data: Prisma.GymCreateInput) {
     const gym = {
       id: data.id ? data.id : randomUUID(),
@@ -28,5 +18,22 @@ export class InMemoryGymRepository implements GymRepository {
     this.gyms.push(gym)
 
     return gym
+  }
+
+  async findById(id: string) {
+    const gym = this.gyms.find((gym) => gym.id === id)
+
+    if (!gym) {
+      return null
+    }
+
+    return gym
+  }
+
+  async findManyGyms(search: string, page: number) {
+    const gyms = this.gyms
+      .filter((item) => item.title.includes(search))
+      .slice((page - 1) * 20, page * 20)
+    return gyms
   }
 }

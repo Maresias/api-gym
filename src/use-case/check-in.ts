@@ -23,7 +23,7 @@ export class CheckInUseCase {
     private gymRepository: GymRepository,
   ) {}
 
-  async create({
+  async execute({
     userId,
     gymId,
     userLatitude,
