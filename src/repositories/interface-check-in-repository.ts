@@ -1,7 +1,7 @@
 import { CheckIn, Prisma } from '@prisma/client'
 
 export interface CheckInRepository {
-  findById(id: string): Promise<CheckIn | null>
+  findById(checkInId: string): Promise<CheckIn | null>
 
   create(data: Prisma.CheckInUncheckedCreateInput): Promise<CheckIn>
 
@@ -10,4 +10,6 @@ export interface CheckInRepository {
   findManyUserIdCheckInHistory(userId: string, page: number): Promise<CheckIn[]>
 
   getUserCheckInmetrics(userId: string): Promise<number>
+
+  save(checkIn: CheckIn): Promise<CheckIn>
 }

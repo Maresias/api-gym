@@ -19,8 +19,8 @@ export class InMemoryCheckInRepository implements CheckInRepository {
     return checkIn
   }
 
-  async findById(id: string) {
-    const checkIn = this.items.find((item) => item.id === id)
+  async findById(checkInId: string) {
+    const checkIn = this.items.find((item) => item.id === checkInId)
 
     if (!checkIn) {
       return null
@@ -59,5 +59,15 @@ export class InMemoryCheckInRepository implements CheckInRepository {
     ).length
 
     return checkInMetrics
+  }
+
+  async save(checkIn: CheckIn) {
+    const checkInIndex = this.items.findIndex((item) => item.id === checkIn.id)
+
+    if (checkInIndex >= 0) {
+      this.items[checkInIndex] = checkIn
+    }
+
+    return checkIn
   }
 }
