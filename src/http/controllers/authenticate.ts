@@ -17,10 +17,13 @@ export async function authenticate(
   try {
     const authenticateUserCase = makeauthenticateUserCase()
 
-    await authenticateUserCase.execute({
+    const { user } = await authenticateUserCase.execute({
       email,
       password,
     })
+
+    //const token = await 
+    return reply.status(200).send()
   } catch (err) {
     if (err instanceof InvalidCredentialError) {
       return reply.status(400).send({
@@ -30,6 +33,4 @@ export async function authenticate(
 
     throw err
   }
-
-  return reply.status(200).send()
 }
