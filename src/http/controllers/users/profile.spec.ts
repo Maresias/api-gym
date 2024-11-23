@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { app } from '@/app'
 import request from 'supertest'
+import { createUserAuthenticate } from '@/utils/test/create-user-authenticate.spec'
 
 describe('Test (e2e) Profile', () => {
   beforeEach(async () => {
@@ -11,19 +12,9 @@ describe('Test (e2e) Profile', () => {
   })
 
   it('should be able get Profile', async () => {
-    await request(app.server).post('/users').send({
-      name: 'Jhon doe',
-      email: 'jhondoe@gmail.com',
-      password: '1234567',
-    })
+    const authUser = await createUserAuthenticate(app)
 
-    const authenticateResponse = await request(app.server)
-      .post('/sessions')
-      .send({ email: 'jhondoe@gmail.com', password: '1234567' })
-
-    expect(authenticateResponse.statusCode).toEqual(200)
-
-    const { token } = authenticateResponse.body
+    const { token, email } = authUser
 
     const responeProfile = await request(app.server)
       .get('/me')
@@ -31,8 +22,6 @@ describe('Test (e2e) Profile', () => {
       .send()
 
     expect(responeProfile.statusCode).toEqual(200)
-    expect(responeProfile.body.user).toEqual(
-      expect.objectContaining({ email: 'jhondoe@gmail.com' }),
-    )
+    expect(responeProfile.body.user).toEqual(expect.objectContaining({ email }))
   })
 })
