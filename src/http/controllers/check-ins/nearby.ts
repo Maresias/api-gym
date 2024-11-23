@@ -11,10 +11,10 @@ export async function nearby(request: FastifyRequest, reply: FastifyReply) {
 
   const nearbyCheckInUseCase = makeFetchUserCheckInsUseCase()
 
-  const chenkIns = nearbyCheckInUseCase.execute({
+  const { checkIns } = await nearbyCheckInUseCase.execute({
     userId: request.user.sub,
     page,
   })
 
-  return reply.status(200).send({ chenkIns })
+  return reply.status(200).send({ checkIns })
 }
