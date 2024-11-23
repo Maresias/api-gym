@@ -4,9 +4,9 @@ import { makeCheckInUseCase } from '@/use-case/factories/make-check-in-use-case'
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const gymIdSchemaParams = z.object({
-    id: z.string().uuid(),
+    gymId: z.string().uuid(),
   })
-  const checkInSchemaQuery = z.object({
+  const checkInSchemaBody = z.object({
     latitude: z.number().refine((value) => {
       return Math.abs(value) <= 90
     }),
@@ -15,15 +15,15 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     }),
   })
 
-  const { id } = gymIdSchemaParams.parse(request.params)
+  const { gymId } = gymIdSchemaParams.parse(request.body)
 
-  const { latitude, longitude } = checkInSchemaQuery.parse(request.query)
+  const { latitude, longitude } = checkInSchemaBody.parse(request.query)
 
   const checkInUseCase = makeCheckInUseCase()
 
   const checkIn = await checkInUseCase.execute({
     userId: request.user.sub,
-    gymId: id,
+    gymId,
     userLatitude: latitude,
     userLongitude: longitude,
   })
