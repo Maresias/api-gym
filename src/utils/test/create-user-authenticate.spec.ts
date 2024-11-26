@@ -1,3 +1,4 @@
+import { prisma } from '@/lib/prisma'
 import { FastifyInstance } from 'fastify'
 import request from 'supertest'
 
@@ -16,7 +17,9 @@ export async function createUserAuthenticate(app: FastifyInstance) {
       password: '1234567',
     })
 
+  const user = await prisma.user.findFirstOrThrow()
+
   const { token } = authenticateResponse.body
 
-  return { token, email }
+  return { token, email, userId: user.id }
 }
