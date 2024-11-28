@@ -27,6 +27,7 @@ describe('Test ( e2e ) Check-Ins History', () => {
         longitude: -45.563249,
       },
     })
+
     await prisma.checkIn.createMany({
       data: [
         { gym_id: gym.id, user_id: userId },
@@ -34,17 +35,17 @@ describe('Test ( e2e ) Check-Ins History', () => {
       ],
     })
 
-    const checkInsHistory = await request(app.server)
+    const responseCheckInsHistory = await request(app.server)
       .get('/check-ins/history')
       .set('Authorization', `Bearer ${token}`)
-      .query({
-        page: 1,
-      })
+      .send()
 
-    const { checkIns } = checkInsHistory.body
-
-    expect(checkInsHistory.statusCode).toEqual(204)
-    expect(checkIns).toEqual([
+    expect(responseCheckInsHistory.statusCode).toEqual(200)
+    expect(responseCheckInsHistory.body.checkIns).toEqual([
+      expect.objectContaining({
+        gym_id: gym.id,
+        user_id: userId,
+      }),
       expect.objectContaining({
         gym_id: gym.id,
         user_id: userId,

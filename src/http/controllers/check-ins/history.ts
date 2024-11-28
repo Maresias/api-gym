@@ -4,7 +4,7 @@ import { makeFetchUserCheckInsUseCase } from '@/use-case/factories/make-fetch-us
 
 export async function history(request: FastifyRequest, reply: FastifyReply) {
   const historySchemaQuery = z.object({
-    page: z.coerce.number().min(1),
+    page: z.coerce.number().min(1).default(1),
   })
 
   const { page } = historySchemaQuery.parse(request.query)
@@ -16,5 +16,5 @@ export async function history(request: FastifyRequest, reply: FastifyReply) {
     page,
   })
 
-  return reply.status(204).send({ checkIns })
+  return reply.status(200).send({ checkIns })
 }
