@@ -14,7 +14,7 @@ describe('Test ( e2e ) validate', () => {
   })
 
   it('should be able to validate check-in', async () => {
-    const userAuth = createUserAuthenticate(app)
+    const userAuth = await createUserAuthenticate(app)
 
     const { token, userId } = userAuth
 
@@ -28,13 +28,25 @@ describe('Test ( e2e ) validate', () => {
       },
     })
 
-    const checkIn = await prisma.checkIn.create({
+    let checkIn = await prisma.checkIn.create({
       data: {
         gym_id: gym.id,
         user_id: userId,
       },
     })
 
-    
+    const responseValidate = await request(app.server)
+      .patch(`/check-ins/${checkIn.id}/validate`)
+      .set('Authorization', `Bearer ${token}`)
+      .send()
+
+    checkIn = await prisma.checkIn.findFirstOrThrow({
+      where: {
+        id: checkIn.id,
+      },
+    })
+
+    expect(responseValidate.statusCode).toEqual(204)
+    expect(checkIn.validated_at).toEqual(expect.any(Date))
   })
 })
