@@ -1,11 +1,10 @@
 version: '3'
-
 services:
-  api-gym-pg:
-    image: bitnami/postgresql
-    ports:
-      -5432:5432
-    environment:
-      - POSTGRESQL_USERNAME=docker
-      - POSTGRESQL_PASSWORD=docekr
-      - POSTGRESQL_DATABASE=apigym
+ api-gym-pg:
+ image: bitnami/postgresql
+ ports:
+  - 5432:5432
+environment:
+  - POSTGRESQL_USERNAME=maresias
+  - POSTGRESQL_PASSWORD=maresias
+  - POSTGRESQL_DATABASE=apigym
